@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionHandlerControllerAdvice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CrudSpringBoot1</a> &gt; <a href="index.source.html" class="el_package">com.pragma.poc.exceptions</a> &gt; <span class="el_source">ExceptionHandlerControllerAdvice.java</span></div><h1>ExceptionHandlerControllerAdvice.java</h1><pre class="source lang-java linenums">package com.pragma.poc.exceptions;
+
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+
+@ControllerAdvice
+<span class="fc" id="L11">public class ExceptionHandlerControllerAdvice {</span>
+
+	@ExceptionHandler
+	public ResponseEntity&lt;ErrorObject&gt; handleResourceNotFoundException(ResourceNotFoundException exception) {
+<span class="fc" id="L15">		ErrorObject error = new ErrorObject();</span>
+<span class="fc" id="L16">		error.setStatusCode(HttpStatus.NOT_FOUND.value());</span>
+<span class="fc" id="L17">		error.setMessage(exception.getMessage());</span>
+<span class="fc" id="L18">		error.setTimestamp(System.currentTimeMillis());</span>
+<span class="fc" id="L19">		return new ResponseEntity&lt;ErrorObject&gt;(error, HttpStatus.NOT_FOUND);</span>
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity&lt;ErrorObject&gt; handleClientAlreadyExists(ClientAlreadyExistsException exception) {
+<span class="fc" id="L24">		ErrorObject error = new ErrorObject();</span>
+<span class="fc" id="L25">		error.setStatusCode(HttpStatus.CONFLICT.value());</span>
+<span class="fc" id="L26">		error.setMessage(exception.getMessage());</span>
+<span class="fc" id="L27">		error.setTimestamp(System.currentTimeMillis());</span>
+<span class="fc" id="L28">		return new ResponseEntity&lt;ErrorObject&gt;(error, HttpStatus.CONFLICT);</span>
+	}
+
+	@ExceptionHandler
+	public ResponseEntity&lt;ErrorObject&gt; handleNoDataFoundException(NoDataFoundException exception) {
+<span class="fc" id="L33">		ErrorObject error = new ErrorObject();</span>
+<span class="fc" id="L34">		error.setStatusCode(HttpStatus.NO_CONTENT.value());</span>
+<span class="fc" id="L35">		error.setMessage(exception.getMessage());</span>
+<span class="fc" id="L36">		error.setTimestamp(System.currentTimeMillis());</span>
+<span class="fc" id="L37">		return new ResponseEntity&lt;ErrorObject&gt;(error, HttpStatus.NO_CONTENT);</span>
+	}
+	
+	
+	@ExceptionHandler
+	public ResponseEntity&lt;ErrorObject&gt; handleClientServiceException(ClientServiceException exception) {
+<span class="fc" id="L43">		ErrorObject error = new ErrorObject();</span>
+<span class="fc" id="L44">		error.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
+<span class="fc" id="L45">		error.setMessage(exception.getMessage());</span>
+<span class="fc" id="L46">		error.setTimestamp(System.currentTimeMillis());</span>
+<span class="fc" id="L47">		return new ResponseEntity&lt;ErrorObject&gt;(error, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity&lt;ErrorObject&gt; handleBadRequestException(BadRequestException exception) {
+<span class="fc" id="L52">		ErrorObject error = new ErrorObject();</span>
+<span class="fc" id="L53">		error.setStatusCode(HttpStatus.BAD_REQUEST.value());</span>
+<span class="fc" id="L54">		error.setMessage(exception.getMessage());</span>
+<span class="fc" id="L55">		error.setTimestamp(System.currentTimeMillis());</span>
+<span class="fc" id="L56">		return new ResponseEntity&lt;ErrorObject&gt;(error, HttpStatus.BAD_REQUEST);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

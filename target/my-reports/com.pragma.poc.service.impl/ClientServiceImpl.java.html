@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CrudSpringBoot1</a> &gt; <a href="index.source.html" class="el_package">com.pragma.poc.service.impl</a> &gt; <span class="el_source">ClientServiceImpl.java</span></div><h1>ClientServiceImpl.java</h1><pre class="source lang-java linenums">package com.pragma.poc.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pragma.poc.DTO.ClientDTO;
+import com.pragma.poc.DTO.ImageDTO;
+import com.pragma.poc.document.Image;
+import com.pragma.poc.entity.Client;
+import com.pragma.poc.exceptions.ClientAlreadyExistsException;
+import com.pragma.poc.exceptions.ClientServiceException;
+import com.pragma.poc.exceptions.ImageException;
+import com.pragma.poc.exceptions.NoDataFoundException;
+import com.pragma.poc.exceptions.ResourceNotFoundException;
+
+import com.pragma.poc.mapper.MapperService;
+import com.pragma.poc.repository.ImageRepository;
+import com.pragma.poc.service.IClientService;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.pragma.poc.repository.ClientRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+
+
+@Service
+<span class="fc" id="L31">public class ClientServiceImpl implements IClientService {</span>
+	
+	@Autowired
+	ClientRepository clientRepository;
+
+	@Autowired
+	ImageRepository imageRepository;
+
+	@Autowired
+	ImageServiceImpl imageService;
+	
+	@Autowired
+	MapperService mapper;
+
+
+	@Transactional
+	public Client postClient(ClientDTO clientDTO, MultipartFile imageFile) throws ClientAlreadyExistsException{
+<span class="fc" id="L48">			Client client = mapper.mapperClientDTOtoClient(clientDTO);</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">			if(!existsByid(client.getId())){</span>
+<span class="fc" id="L50">				client.setImage(imageFile.getOriginalFilename());</span>
+<span class="fc" id="L51">				clientRepository.save(client);</span>
+<span class="fc" id="L52">				return client;</span>
+				}
+<span class="nc" id="L54">			throw new ClientAlreadyExistsException(&quot;Client Already Exists&quot;);	</span>
+	}
+	
+	public Client updateClient(ClientDTO clientDTO, MultipartFile imageFile)throws NoDataFoundException{
+<span class="fc" id="L58">		Client client = mapper.mapperClientDTOtoClient(clientDTO);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">		if(existsByid(client.getId())){</span>
+<span class="nc" id="L60">			client.setImage(imageFile.getOriginalFilename());</span>
+<span class="nc" id="L61">			clientRepository.save(client);</span>
+<span class="nc" id="L62">			return client;</span>
+		}
+<span class="fc" id="L64">		throw new NoDataFoundException(&quot;Client does not exist&quot;);		</span>
+	}
+	
+	public List&lt;ClientDTO&gt; getAllClients() throws NoDataFoundException{
+<span class="fc" id="L68">		List&lt;Client&gt; clientList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L69">		List&lt;ClientDTO&gt; clients = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L70">		clientList = clientRepository.findAll();</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if(clientList.size() &gt; 0 ){</span>
+<span class="nc" id="L72">			clientList.stream().forEach(c -&gt;{</span>
+<span class="nc" id="L73">				ClientDTO clientDTO = new ClientDTO();</span>
+<span class="nc" id="L74">				ImageDTO imageDTO = new ImageDTO();</span>
+<span class="nc" id="L75">				Image image=imageRepository.findImageByClientId(String.valueOf(c.getId()));</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">				if (image!=null){</span>
+<span class="nc" id="L77">					imageDTO= mapper.mapperImageToImageDTO(image);</span>
+<span class="nc" id="L78">					clientDTO= mapper.mapperClientToClientDTO(c);</span>
+<span class="nc" id="L79">					clientDTO.setImage(imageDTO);</span>
+<span class="nc" id="L80">					clients.add(clientDTO);</span>
+<span class="nc" id="L81">				}});</span>
+<span class="nc" id="L82">			return clients;</span>
+			}
+		
+<span class="fc" id="L85">		return clients;</span>
+	}
+	
+	public ClientDTO getClient(int id) throws ResourceNotFoundException, Exception{
+<span class="nc" id="L89">		Client client = clientRepository.findById(id);</span>
+<span class="nc" id="L90">		ClientDTO clientDTO = new ClientDTO();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if(client!=null ){</span>
+<span class="nc" id="L92">			clientDTO= mapper.mapperClientToClientDTO(client);		</span>
+<span class="nc" id="L93">			clientDTO.setImage(imageService.getImage(clientDTO.getId()));	</span>
+<span class="nc" id="L94">			return clientDTO;</span>
+			}
+<span class="nc" id="L96">		throw new ResourceNotFoundException(&quot;Client does not exist&quot;);</span>
+	}
+	
+	
+	public String deleteClient(int id)  {
+<span class="fc" id="L101">		clientRepository.deleteById(id);</span>
+<span class="fc" id="L102">		imageRepository.deleteByClientId(String.valueOf(id));</span>
+<span class="fc" id="L103">		return &quot;Remove succesfully!&quot;;</span>
+	}
+	
+	public Client getClients(int id)throws ResourceNotFoundException{
+<span class="fc" id="L107">		Client client = clientRepository.findById(id);</span>
+<span class="fc" id="L108">		return client;</span>
+	}
+	
+	public Boolean existsByid(int id) {
+<span class="fc" id="L112">		return clientRepository.existsById(id);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.pragma.poc.controller.ClientControllerTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.056 s - in com.pragma.poc.controller.ClientControllerTests

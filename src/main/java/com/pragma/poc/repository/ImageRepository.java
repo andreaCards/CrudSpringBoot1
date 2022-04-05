@@ -9,10 +9,10 @@ import java.util.List;
 @Repository
 public interface ImageRepository extends MongoRepository<Image, String> {
 
-    public List<Image> findImageByClientId(int id);
+    public Image findImageByClientId(String id);
 
-    public void deleteByClientId(int id);
-
-
+    public void deleteByClientId(String id);
+    
+    public Boolean existsByClientId(String id);
 
 }

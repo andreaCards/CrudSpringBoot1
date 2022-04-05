@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+CrudSpringBoot1,com.pragma.poc.document,Image,31,15,0,0,4,1,6,4,6,4
+CrudSpringBoot1,com.pragma.poc.entity,Client,58,34,0,0,6,2,8,9,8,9
+CrudSpringBoot1,com.pragma.poc.controller,ImageController,0,21,0,0,0,3,0,3,0,3
+CrudSpringBoot1,com.pragma.poc.controller,ClientController,0,66,0,0,0,6,0,6,0,6
+CrudSpringBoot1,com.pragma.poc.DTO,ImageDTO,36,0,0,0,4,0,8,0,8,0
+CrudSpringBoot1,com.pragma.poc.DTO,ClientDTO,73,24,0,0,0,9,15,2,15,2
+CrudSpringBoot1,com.pragma.poc.service.impl,ClientServiceImpl,115,91,4,2,24,26,4,7,1,7
+CrudSpringBoot1,com.pragma.poc.service.impl,ImageServiceImpl,15,52,0,0,5,15,1,5,1,5
+CrudSpringBoot1,com.pragma.poc,CrudSpringBoot1Application,5,3,0,0,2,1,1,1,1,1

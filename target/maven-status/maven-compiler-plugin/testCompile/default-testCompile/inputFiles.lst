@@ -1,2 +1,5 @@
-C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\CrudSpringBoot1ApplicationTests.java
-C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\service\ClientServiceTest.java
+C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\exceptions\ControllerAdviceTests.java
+C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\controller\ClientControllerTests.java
+C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\service\ClientServiceTests.java
+C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\service\ImageServiceTests.java
+C:\Users\andrea.cardenas\eclipse-workspace\CrudSpringBoot1\src\test\java\com\pragma\poc\controller\ImageControllerTests.java

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CrudSpringBoot1</a> &gt; <a href="index.source.html" class="el_package">com.pragma.poc.service.impl</a> &gt; <span class="el_source">ClientServiceImpl.java</span></div><h1>ClientServiceImpl.java</h1><pre class="source lang-java linenums">package com.pragma.poc.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pragma.poc.DTO.ClientDTO;
+import com.pragma.poc.DTO.ImageDTO;
+import com.pragma.poc.document.Image;
+import com.pragma.poc.entity.Client;
+import com.pragma.poc.repository.ImageRepository;
+import com.pragma.poc.service.IClientService;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.pragma.poc.repository.ClientRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+
+
+@Service
+<span class="fc" id="L24">public class ClientServiceImpl implements IClientService {</span>
+	
+	@Autowired
+	ClientRepository clientRepository;
+
+	@Autowired
+	ImageRepository imageRepository;
+
+	@Autowired
+	ImageServiceImpl imageService;
+	
+<span class="fc" id="L35">	public static ModelMapper modelMapper = new ModelMapper();</span>
+
+
+	@Transactional
+	public String postClient(ClientDTO clientDTO, MultipartFile imageFile) {
+<span class="fc" id="L40">		Client client = new Client();</span>
+<span class="fc" id="L41">		client= modelMapper.map(clientDTO, Client.class);</span>
+		try {		
+<span class="nc" id="L43">			imageService.postImage(imageFile, client.getId());</span>
+<span class="nc" id="L44">			client.setImage(imageFile.getOriginalFilename());</span>
+<span class="pc" id="L45">		} catch (Exception e) {</span>
+<span class="fc" id="L46">			System.out.println(e);</span>
+		}
+<span class="fc" id="L48">		clientRepository.save(client);</span>
+<span class="fc" id="L49">		return &quot;Client created succesfully!&quot;;</span>
+	}
+
+	
+	public List&lt;ClientDTO&gt; getAllClients() {
+<span class="fc" id="L54">		List&lt;Client&gt; clientList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L55">		List&lt;ClientDTO&gt; clients = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L56">			clientList = clientRepository.findAll();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">			if(clientList.size() &gt; 0 ){</span>
+<span class="nc" id="L58">				clientList.stream().forEach(c -&gt;{</span>
+<span class="nc" id="L59">					ClientDTO clientDTO = new ClientDTO();</span>
+<span class="nc" id="L60">					ImageDTO imageDTO = new ImageDTO();</span>
+<span class="nc" id="L61">					Image image=imageRepository.findImageByClientId(c.getId());</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">					if (image!=null){</span>
+<span class="nc" id="L63">						imageDTO= modelMapper.map(image, ImageDTO.class);</span>
+<span class="nc" id="L64">						clientDTO= modelMapper.map(c, ClientDTO.class);</span>
+<span class="nc" id="L65">						clientDTO.setImage(imageDTO);</span>
+<span class="nc" id="L66">						clients.add(clientDTO);</span>
+<span class="nc" id="L67">					}});</span>
+				}
+<span class="fc" id="L69">		return clients;</span>
+	}
+	
+	public ClientDTO getClient(int id) {
+<span class="fc" id="L73">		Client client = clientRepository.findById(id);</span>
+<span class="fc" id="L74">		ClientDTO clientDTO = new ClientDTO();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if(client!= null ){</span>
+<span class="nc" id="L76">			Image image = new Image();</span>
+<span class="nc" id="L77">			ImageDTO imageDTO = new ImageDTO();</span>
+<span class="nc" id="L78">			clientDTO= modelMapper.map(client, ClientDTO.class);</span>
+<span class="nc" id="L79">			image = imageRepository.findImageByClientId(client.getId());</span>
+<span class="nc" id="L80">			String savePath = &quot;C:\\Users\\andrea.cardenas\\Downloads\\&quot;+image.getName();</span>
+			try {
+<span class="nc" id="L82">				imageService.decodeImage(image.getImage(),savePath);</span>
+<span class="nc" id="L83">				imageDTO= modelMapper.map(image, ImageDTO.class);</span>
+<span class="nc" id="L84">				clientDTO.setImage(imageDTO);</span>
+<span class="nc" id="L85">			}catch (Exception e){</span>
+<span class="nc" id="L86">				System.out.println(e);</span>
+			}
+			}
+<span class="fc" id="L89">		return clientDTO;</span>
+	}
+	
+	public String deleteClient(int id) {
+<span class="fc" id="L93">		clientRepository.deleteById(id);</span>
+<span class="fc" id="L94">		imageRepository.deleteByClientId(id);</span>
+<span class="fc" id="L95">		return &quot;Remove succesfully!&quot;;</span>
+	}
+		
+
+	public String updateClient(ClientDTO clientDTO, MultipartFile imageFile) {
+<span class="fc" id="L100">		Client client = new Client();</span>
+<span class="fc" id="L101">		client= modelMapper.map(clientDTO, Client.class);</span>
+			try {
+<span class="nc" id="L103">				imageService.postImage(imageFile, client.getId());</span>
+<span class="nc" id="L104">				client.setImage(imageFile.getOriginalFilename());</span>
+<span class="pc" id="L105">			} catch (Exception e) {</span>
+<span class="fc" id="L106">				System.out.println(e);</span>
+			}
+<span class="fc" id="L108">			clientRepository.save(client);</span>
+<span class="fc" id="L109">		return &quot;Client was updated successfully&quot;;</span>
+		}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

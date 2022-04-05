@@ -1,0 +1,13 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+CrudSpringBoot1,com.pragma.poc.exceptions,BadRequestException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.exceptions,ClientAlreadyExistsException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.exceptions,ImageException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.exceptions,ClientServiceException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.exceptions,ExceptionHandlerControllerAdvice,0,113,0,0,0,26,0,6,0,6
+CrudSpringBoot1,com.pragma.poc.exceptions,NoDataFoundException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.exceptions,ResourceNotFoundException,0,4,0,0,0,2,0,1,0,1
+CrudSpringBoot1,com.pragma.poc.mapper,MapperService,24,8,0,0,6,2,3,2,3,2
+CrudSpringBoot1,com.pragma.poc.controller,ImageController,0,20,0,0,0,3,0,3,0,3
+CrudSpringBoot1,com.pragma.poc.controller,ClientController,0,84,0,0,0,10,0,6,0,6
+CrudSpringBoot1,com.pragma.poc.service.impl,ClientServiceImpl,89,82,7,3,22,20,7,7,2,7
+CrudSpringBoot1,com.pragma.poc.service.impl,ImageServiceImpl,41,83,3,1,9,24,3,8,1,8
